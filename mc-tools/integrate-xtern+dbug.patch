@@ -1,0 +1,39 @@
+diff -ruN dbug-orig/src/arbiter/server.cc dbug/src/arbiter/server.cc
+--- dbug-orig/src/arbiter/server.cc	2013-03-07 02:06:11.592590466 -0500
++++ dbug/src/arbiter/server.cc	2013-03-07 02:07:06.872588776 -0500
+@@ -365,7 +365,9 @@
+     Process *process = thread->pgrp();
+     if (process->status() == Process::RUNNING ||
+         process->status() == Process::CONTINUED) {
+-      bool still_running = false;
++      //Heming: a temp hack for integration, even all threads are terminated,
++      // still do not mark the whole process as terminated.
++      bool still_running = true;//false;
+       for (const Thread *sibling : thread->pgrp()->threads()) {
+         if (sibling->status() == Thread::RUNNING ||
+             sibling->status() == Thread::DETACHED) {
+diff -ruN dbug-orig/src/interposition/pthread-mgmt.cc dbug/src/interposition/pthread-mgmt.cc
+--- dbug-orig/src/interposition/pthread-mgmt.cc	2013-03-07 02:06:11.592590466 -0500
++++ dbug/src/interposition/pthread-mgmt.cc	2013-03-07 02:06:16.972590168 -0500
+@@ -199,13 +199,19 @@
+ 
+ #if DBUG_HAVE_PTHREAD_GETCONCURRENCY
+ int Handler::pthread_getconcurrency() {
+-  return Original::pthread_getconcurrency();
++  //return Original::pthread_getconcurrency();
++  //Heming: a hack for the integrated xtern+dbug: attach current thread to dbug.
++  arbiter_->UpdateThreadStatus(arbiter_->ThreadID(pthread_self()), Thread::RUNNING);
++  return 0;
+ }
+ #endif
+ 
+ #if DBUG_HAVE_PTHREAD_SETCONCURRENCY
+ int Handler::pthread_setconcurrency(int new_level) {
+-  return Original::pthread_setconcurrency(new_level);
++  //return Original::pthread_setconcurrency(new_level);
++  //Heming: a hack for the integrated xtern+dbug: detach current thread from dbug.
++  arbiter_->UpdateThreadStatus(arbiter_->ThreadID(pthread_self()), Thread::TERMINATED);
++  return new_level;
+ }
+ #endif
+ 

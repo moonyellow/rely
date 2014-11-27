@@ -1,0 +1,43 @@
+#!/bin/bash
+
+DBUG_VER=0.3.0-beta
+THRIFT_VER=1.0.0-dev
+
+# If dbug does not exist, download from Internet.
+cd $SMT_MC_ROOT/mc-tools/
+if [ ! -d dbug ]; then
+    wget http://www.cs.cmu.edu/~jsimsa/dbug/dbug-$DBUG_VER.tar.gz
+    tar zxvf dbug-$DBUG_VER.tar.gz
+    mv dbug-$DBUG_VER dbug
+fi
+
+if [ ! -f $SMT_MC_ROOT/mc-tools/dbug/thrift-$THRIFT_VER/install/lib/libthrift-$THRIFT_VER.so ]; then
+	# Decompress.
+	cd $SMT_MC_ROOT/mc-tools/dbug
+	#rm thrift-$THRIFT_VER -rf
+	if [ ! -f thrift-$THRIFT_VER.tar.gz ]; then
+    		wget http://www.cs.cmu.edu/~jsimsa/dbug/thrift-$THRIFT_VER.tar.gz
+	fi
+	tar zxvf thrift-$THRIFT_VER.tar.gz
+
+	# Compile thrift.
+	cd thrift-$THRIFT_VER
+	./configure --prefix=$PWD/install --without-c_glib --without-csharp --without-erlang --without-haskell \
+		--without-java --without-perl --without-php --without-python --without-qt4 --without-ruby 
+	# We can not add -j64 for make, since there is process races and the make would fail sometimes...
+	make -j64 && make install
+else
+	echo "thrift-$THRIFT_VER has already been built, go ahead and build dbug.";
+fi
+
+# Compile dbug.
+cd $SMT_MC_ROOT/mc-tools/dbug
+rm -rf install
+./bootstrap.sh
+mkdir build
+cd build
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$SMT_MC_ROOT/mc-tools/dbug/thrift-$THRIFT_VER/install/lib/pkgconfig/
+export PATH=$SMT_MC_ROOT/mc-tools/dbug/thrift-$THRIFT_VER/install/bin/:$PATH
+../configure --prefix=$SMT_MC_ROOT/mc-tools/dbug/install
+make -j64 CXX=g++-4.6 && make CXX=g++-4.6 install
+

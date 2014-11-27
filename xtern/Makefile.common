@@ -1,0 +1,50 @@
+#
+# Copyright (c) 2013,  Regents of the Columbia University 
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other 
+# materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+# IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+# -*- Makefile -*-
+
+include $(LEVEL)/Makefile.config
+
+ifdef EXCLUDED_SOURCES
+  SOURCES := $(notdir $(wildcard $(PROJ_SRC_DIR)/*.cpp \
+             $(PROJ_SRC_DIR)/*.cc $(PROJ_SRC_DIR)/*.c))
+  SOURCES := $(filter-out $(EXCLUDED_SOURCES),$(SOURCES))
+	endif
+
+# Include LLVM's Master Makefile rules.
+include $(LLVM_SRC_ROOT)/Makefile.rules
+
+AdditionalIncludes = -I$(LLVM_ROOT)/common/include \
+	             -I$(PROJ_SRC_ROOT)/include -I$(PROJ_OBJ_ROOT)/include
+
+CFLAGS   += -Wno-variadic-macros $(AdditionalIncludes)
+CXXFLAGS += -Wno-variadic-macros $(AdditionalIncludes)
+
+ifeq ($(BuildMode),Debug)
+  DEBUG_RUNTIME = 1
+endif
+
+# Emit a warning if can't find llvm-config 
+LLVMBuildMode := $(shell $(LLVM_CONFIG) --build-mode)
+ifeq ($(strip $(LLVMBuildMode)),)
+  $(error Unable to find llvm-config. \
+   Build Mode ($(BuildMode)) must be the same as LLVM Build Mode.)
+endif
+
+
