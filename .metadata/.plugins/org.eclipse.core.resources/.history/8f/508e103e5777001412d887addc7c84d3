@@ -69,7 +69,7 @@ public class Scheduler extends Thread
 			try {
 
 				if(!queue.isEmpty()){
-					current =  queue.removeFirst();
+					current =  queue.getFirst();
 				}else{
 					current = null;
 				}
@@ -81,12 +81,13 @@ public class Scheduler extends Thread
 					schedulerSleep();
 
 					System.out.println("* * * Context Switch * * * ");
-					
+
 					current.setPriority(2);
-					queue.addLast(current);
+
 				}
 				
-					
+				if(current!=null)
+					queue.addLast(current);
 
 			} catch (NullPointerException e3) {
 			}

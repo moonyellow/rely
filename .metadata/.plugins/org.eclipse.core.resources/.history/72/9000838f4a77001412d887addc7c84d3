@@ -20,7 +20,11 @@ public class ClassPrinter extends ClassVisitor implements Opcodes{
 		ClassWriter cw = new ClassWriter(cr, 0);
 	    TraceClassVisitor tcv = new TraceClassVisitor(cw, new PrintWriter(System.out));
 	    
-	    cr.accept(tcv, 0);
+	    CheckClassAdapter cv = new CheckClassAdapter(tcv);
+	    tcv.visit(V1_5, ACC_PUBLIC,
+	        "java/lang/Thread", null, "java/lang/Object",
+	        new String[] { "pkg/Mesurable" });
+	    tcv.visitEnd();
 	    byte[] b = cw.toByteArray();
 	    for(int i=0;i<b.length;i++)
 	    	System.out.print((char)b[i]);

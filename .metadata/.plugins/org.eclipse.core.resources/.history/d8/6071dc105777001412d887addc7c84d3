@@ -6,7 +6,7 @@ public class Scheduler extends Thread
 
 {
 
-	private LinkedList<Thread> queue;
+	private CircularList queue;
 
 	private int timeSlice;
 
@@ -16,7 +16,7 @@ public class Scheduler extends Thread
 
 		timeSlice = DEFAULT_TIME_SLICE;
 
-		queue = new LinkedList<Thread>();
+		queue = new CircularList();
 
 	}
 
@@ -24,7 +24,7 @@ public class Scheduler extends Thread
 
 		timeSlice = quantum;
 
-		queue = new LinkedList<Thread>();
+		queue = new CircularList();
 
 	}
 
@@ -35,7 +35,7 @@ public class Scheduler extends Thread
 
 	public void addThread(Thread t) {
 
-		queue.addLast(t);
+		queue.addItem(t);
 
 	}
 
@@ -68,11 +68,7 @@ public class Scheduler extends Thread
 
 			try {
 
-				if(!queue.isEmpty()){
-					current =  queue.removeFirst();
-				}else{
-					current = null;
-				}
+				current = (Thread) queue.getNext();
 
 				if ((current != null) && (current.isAlive())) {
 
@@ -81,12 +77,10 @@ public class Scheduler extends Thread
 					schedulerSleep();
 
 					System.out.println("* * * Context Switch * * * ");
-					
+
 					current.setPriority(2);
-					queue.addLast(current);
+
 				}
-				
-					
 
 			} catch (NullPointerException e3) {
 			}
