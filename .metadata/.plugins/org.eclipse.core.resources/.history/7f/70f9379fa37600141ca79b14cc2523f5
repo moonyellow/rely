@@ -1,0 +1,14 @@
+package test;
+
+public class MainTest {
+	public static void main(String[] args) throws InterruptedException{
+		Thread t1 = new TestThread();
+		Thread t2 = new TestThread();
+		
+		t1.start();
+		t2.start();
+		t1.suspend();
+		t1.sleep(3000);
+		t1.resume();
+	}
+}
