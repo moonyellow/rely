@@ -1,0 +1,21 @@
+  // access flags 0x9
+  public static main([Ljava/lang/String;)V
+   L0
+    LINENUMBER 12 L0
+    NEW test/TestThread
+    DUP
+    LDC "TT"
+    INVOKESPECIAL test/TestThread.<init> (Ljava/lang/String;)V
+    ASTORE 1
+   L1
+    LINENUMBER 15 L1
+    ALOAD 1
+    INVOKEVIRTUAL java/lang/Thread.start ()V
+   L2
+    LINENUMBER 29 L2
+    RETURN
+   L3
+    LOCALVARIABLE args [Ljava/lang/String; L0 L3 0
+    LOCALVARIABLE t1 Ljava/lang/Thread; L1 L3 1
+    MAXSTACK = 3
+    MAXLOCALS = 2

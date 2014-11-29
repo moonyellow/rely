@@ -1,0 +1,57 @@
+// access flags 0x9
+  public static main([Ljava/lang/String;)V
+   L0
+    LINENUMBER 5 L0
+    NEW test/Scheduler
+    DUP
+    INVOKESPECIAL test/Scheduler.<init> ()V
+    ASTORE 1
+   L1
+    LINENUMBER 6 L1
+    INVOKESTATIC java/lang/Thread.currentThread ()Ljava/lang/Thread;
+    BIPUSH 10
+    INVOKEVIRTUAL java/lang/Thread.setPriority (I)V
+   L2
+    LINENUMBER 7 L2
+    ALOAD 1
+    INVOKEVIRTUAL test/Scheduler.start ()V
+   L3
+    LINENUMBER 8 L3
+    INVOKESTATIC java/lang/Thread.currentThread ()Ljava/lang/Thread;
+    ICONST_2
+    INVOKEVIRTUAL java/lang/Thread.setPriority (I)V
+   L4
+    LINENUMBER 9 L4
+    ALOAD 1
+    INVOKESTATIC java/lang/Thread.currentThread ()Ljava/lang/Thread;
+    INVOKEVIRTUAL test/Scheduler.addThread (Ljava/lang/Thread;)V
+   L5
+    LINENUMBER 12 L5
+    NEW test/TestThread
+    DUP
+    LDC "TT"
+    INVOKESPECIAL test/TestThread.<init> (Ljava/lang/String;)V
+    ASTORE 2
+   L6
+    LINENUMBER 13 L6
+    ALOAD 1
+    ALOAD 2
+    INVOKEVIRTUAL test/Scheduler.addThread (Ljava/lang/Thread;)V
+   L7
+    LINENUMBER 14 L7
+    ALOAD 2
+    ICONST_1
+    INVOKEVIRTUAL java/lang/Thread.setPriority (I)V
+   L8
+    LINENUMBER 15 L8
+    ALOAD 2
+    INVOKEVIRTUAL java/lang/Thread.start ()V
+   L9
+    LINENUMBER 29 L9
+    RETURN
+   L10
+    LOCALVARIABLE args [Ljava/lang/String; L0 L10 0
+    LOCALVARIABLE sched Ltest/Scheduler; L1 L10 1
+    LOCALVARIABLE t1 Ljava/lang/Thread; L6 L10 2
+    MAXSTACK = 3
+    MAXLOCALS = 3

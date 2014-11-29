@@ -1,4 +1,4 @@
-package test;
+package scheduler;
 
 import java.util.*;
 
@@ -10,7 +10,9 @@ public class Scheduler extends Thread
 
 	private int timeSlice;
 
-	private static final int DEFAULT_TIME_SLICE = 1000; // 1 second
+	private static final int DEFAULT_TIME_SLICE = 5; 
+
+	private static int index = 0;
 
 	public Scheduler() {
 
@@ -33,7 +35,7 @@ public class Scheduler extends Thread
 	 * adds a thread to the queue
 	 */
 
-	public void addThread(Thread t) {
+	public synchronized void addThread(Thread t) {
 
 		queue.addLast(t);
 
@@ -67,27 +69,38 @@ public class Scheduler extends Thread
 		while (true) {
 
 			try {
-
-				if(!queue.isEmpty()){
-					current =  queue.removeFirst();
-				}else{
-					current = null;
+				synchronized (this) {
+					if (!queue.isEmpty()) {
+						if (index < queue.size()) {
+							current = queue.get(index);
+							index++;
+						} else {
+							current = queue.get(0);
+							index++;
+						}
+					} else {
+						current = null;
+					}
 				}
 
 				if ((current != null) && (current.isAlive())) {
-
-					current.setPriority(4);
-
-					schedulerSleep();
+					synchronized (this) {
+						current.setPriority(4);
+					}
 
 					System.out.println("* * * Context Switch * * * ");
-					
-					current.setPriority(2);
-					queue.addLast(current);
-				}
-				
-					
+					schedulerSleep();
 
+					synchronized (this) {
+						current.setPriority(2);
+					}
+
+				} else if (current!=null && !current.isAlive()) {
+					synchronized (this) {
+						queue.remove(current);
+						index--;
+					}
+				}
 			} catch (NullPointerException e3) {
 			}
 			;
