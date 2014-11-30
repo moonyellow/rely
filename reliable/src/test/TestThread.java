@@ -10,7 +10,7 @@ public class TestThread extends Thread {
 	public void run() {
 			// TODO Auto-generated method stub
 			for (int i = 0; i < 1000; i++)
-				System.out.print(i + " "+haha);
+				System.out.print(haha+i+" ");
 	}
 
 }

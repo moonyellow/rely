@@ -1,21 +1,71 @@
-  // access flags 0x9
+// access flags 0x9
   public static main([Ljava/lang/String;)V
    L0
-    LINENUMBER 12 L0
+    LINENUMBER 38 L0
+    INVOKESTATIC java/lang/Thread.currentThread ()Ljava/lang/Thread;
+    ASTORE 2
+   L1
+    LINENUMBER 41 L1
+    NEW java/util/ArrayList
+    DUP
+    INVOKESPECIAL java/util/ArrayList.<init> ()V
+    ASTORE 3
+   L2
+    LINENUMBER 48 L2
+    ICONST_0
+    ISTORE 5
+   L3
+    GOTO L4
+   L5
+    LINENUMBER 50 L5
+   FRAME FULL [[Ljava/lang/String; T java/lang/Thread java/util/ArrayList T I] []
+    BIPUSH 65
+    ILOAD 5
+    IADD
+    I2C
+    ISTORE 4
+   L6
+    LINENUMBER 51 L6
     NEW test/TestThread
     DUP
-    LDC "TT"
+    NEW java/lang/StringBuilder
+    DUP
+    ILOAD 4
+    INVOKESTATIC java/lang/String.valueOf (C)Ljava/lang/String;
+    INVOKESPECIAL java/lang/StringBuilder.<init> (Ljava/lang/String;)V
+    INVOKEVIRTUAL java/lang/StringBuilder.toString ()Ljava/lang/String;
     INVOKESPECIAL test/TestThread.<init> (Ljava/lang/String;)V
     ASTORE 1
-   L1
-    LINENUMBER 15 L1
+   L7
+    LINENUMBER 53 L7
+    ALOAD 3
+    ALOAD 2
+    INVOKEVIRTUAL java/lang/Thread.getName ()Ljava/lang/String;
+    INVOKEVIRTUAL java/util/ArrayList.add (Ljava/lang/Object;)Z
+    POP
+   L8
+    LINENUMBER 55 L8
     ALOAD 1
     INVOKEVIRTUAL java/lang/Thread.start ()V
-   L2
-    LINENUMBER 29 L2
+   L9
+    LINENUMBER 48 L9
+    IINC 5 1
+   L4
+   FRAME SAME
+    ILOAD 5
+    ICONST_5
+    IF_ICMPLT L5
+   L10
+    LINENUMBER 60 L10
     RETURN
-   L3
-    LOCALVARIABLE args [Ljava/lang/String; L0 L3 0
-    LOCALVARIABLE t1 Ljava/lang/Thread; L1 L3 1
-    MAXSTACK = 3
-    MAXLOCALS = 2
+   L11
+    LOCALVARIABLE args [Ljava/lang/String; L0 L11 0
+    LOCALVARIABLE t Ljava/lang/Thread; L7 L4 1
+    LOCALVARIABLE threadNow Ljava/lang/Thread; L1 L11 2
+    LOCALVARIABLE threadOrderlist Ljava/util/ArrayList; L2 L11 3
+    // signature Ljava/util/ArrayList<Ljava/lang/String;>;
+    // declaration: java.util.ArrayList<java.lang.String>
+    LOCALVARIABLE c C L6 L4 4
+    LOCALVARIABLE i I L3 L10 5
+    MAXSTACK = 5
+    MAXLOCALS = 6
