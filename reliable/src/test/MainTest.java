@@ -4,8 +4,12 @@ import scheduler.Scheduler;
 import java.util.*;
 
 public class MainTest {
+	
+	//public static Scheduler sd;
+	
 	public static void main(String[] args) {
 		/*
+		 * 
 		Scheduler sched = new Scheduler();
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 		sched.start();
@@ -30,7 +34,7 @@ public class MainTest {
 
 		for (int i = 0; i < 1000; i++)
 			System.out.print(i + " Main");*/
-		//Scheduler sd = Scheduler.getScheduler();
+		//sd = Scheduler.getScheduler();
 		
 		
 		
@@ -40,7 +44,7 @@ public class MainTest {
 		//Order list
 		ArrayList<String> threadOrderlist = new ArrayList<String>();
 		
-		
+
 	
 		//recorder
 		char c;
@@ -52,9 +56,10 @@ public class MainTest {
 			t = new TestThread(c+"");
 //insert	--lock--
 			threadOrderlist.add(threadNow.getName());
-			//sd.addThread(t);
+			
 			t.start();
 			//t.suspend();
+			//sd.addThread(t);
 		}
 		
 		

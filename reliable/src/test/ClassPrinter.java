@@ -16,7 +16,7 @@ public class ClassPrinter extends ClassVisitor implements Opcodes{
 		super(ASM4, cv);
 		}
 	public static void main(String[] args) throws IOException{
-		ClassReader cr = new ClassReader("test.MainTest");
+		ClassReader cr = new ClassReader("microbench.BenchSharedObject");
 		
 		ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
 	    TraceClassVisitor tcv = new TraceClassVisitor(cw, new PrintWriter(System.out));

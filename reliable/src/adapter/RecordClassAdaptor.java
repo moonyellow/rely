@@ -8,23 +8,24 @@ import java.io.PrintWriter;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 import org.objectweb.asm.util.TraceClassVisitor;
 import org.objectweb.asm.*;
 
-public class SchedulerClassAdapter extends ClassVisitor {
+public class RecordClassAdaptor extends ClassVisitor {
 
 	private String owner;
 	private boolean isInterface;
 
-	public SchedulerClassAdapter() {
+	public RecordClassAdaptor() {
 		super(Opcodes.ASM4);
 
 	}
 
-	public SchedulerClassAdapter(ClassVisitor cv) {
+	public RecordClassAdaptor(ClassVisitor cv) {
 		super(Opcodes.ASM4, cv);
 	}
 
@@ -38,10 +39,16 @@ public class SchedulerClassAdapter extends ClassVisitor {
 		//System.out.println(name+"  "+signature+"   "+superName);
 		//System.out.println("**********************************************************");
 		if (!isInterface) {
-			FieldVisitor fv = cv.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, "sd",
-					"Lscheduler/Scheduler;", null, null);
+			FieldVisitor fv = cv.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, "Retable",
+					"Lrecorder/RecordTable;", null, null);
 			if (fv != null) {
 				fv.visitEnd();
+			}
+			
+			FieldVisitor fv2 = cv.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, "Rantable",
+					"Lrecorder/RandomTable;", null, null);
+			if (fv2 != null) {
+				fv2.visitEnd();
 			}
 		}
 	}
@@ -51,10 +58,10 @@ public class SchedulerClassAdapter extends ClassVisitor {
 			String signature, String[] exceptions) {
 		MethodVisitor mv = cv.visitMethod(access, name, desc, signature,
 				exceptions);
-		if (!isInterface && mv != null && !name.equals("<init>")) {
-			SchedulerMethodAdapter sma = new SchedulerMethodAdapter(mv, owner,
+		if (!isInterface && mv != null && name.equals("updateData") && desc.equals("()V")) {
+			RecordMethodAdaptor rma = new RecordMethodAdaptor(mv, owner,
 					access, name, desc);
-			return sma;
+			return rma;
 		}
 		return mv;
 	}
@@ -71,13 +78,13 @@ public class SchedulerClassAdapter extends ClassVisitor {
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		TraceClassVisitor tcv = new TraceClassVisitor(cw, new PrintWriter(
 				System.out));
-		SchedulerClassAdapter cv = new SchedulerClassAdapter(tcv);
+		RecordClassAdaptor cv = new RecordClassAdaptor(tcv);
 
 		// ClassVisitor cv = new SchedulerClassAdapter(cw);
 		cr.accept(cv, 0);
 
 		byte[] b = cw.toByteArray();
-		FileOutputStream fos = new FileOutputStream(new File("MainTest.class"));
+		FileOutputStream fos = new FileOutputStream(new File("BenchSharedObjectRecord.class"));
 		fos.write(b);
 		fos.flush();
 		fos.close();
