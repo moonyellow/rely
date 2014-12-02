@@ -15,17 +15,17 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 import org.objectweb.asm.util.TraceClassVisitor;
 import org.objectweb.asm.*;
 
-public class RecordClassAdaptor extends ClassVisitor {
+public class ReplayClassAdaptor extends ClassVisitor {
 
 	private String owner;
 	private boolean isInterface;
 
-	public RecordClassAdaptor() {
+	public ReplayClassAdaptor() {
 		super(Opcodes.ASM4);
 
 	}
 
-	public RecordClassAdaptor(ClassVisitor cv) {
+	public ReplayClassAdaptor(ClassVisitor cv) {
 		super(Opcodes.ASM4, cv);
 	}
 
@@ -59,7 +59,7 @@ public class RecordClassAdaptor extends ClassVisitor {
 		MethodVisitor mv = cv.visitMethod(access, name, desc, signature,
 				exceptions);
 		if (!isInterface && mv != null && name.equals("updateData") && desc.equals("()V")) {
-			RecordMethodAdaptor rma = new RecordMethodAdaptor(mv, owner,
+			ReplayMethodAdaptor rma = new ReplayMethodAdaptor(mv, owner,
 					access, name, desc);
 			return rma;
 		}
@@ -78,13 +78,13 @@ public class RecordClassAdaptor extends ClassVisitor {
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		TraceClassVisitor tcv = new TraceClassVisitor(cw, new PrintWriter(
 				System.out));
-		RecordClassAdaptor cv = new RecordClassAdaptor(tcv);
+		ReplayClassAdaptor cv = new ReplayClassAdaptor(tcv);
 
 		// ClassVisitor cv = new SchedulerClassAdapter(cw);
 		cr.accept(cv, 0);
 
 		byte[] b = cw.toByteArray();
-		FileOutputStream fos = new FileOutputStream(new File("BenchSharedObjectRecord.class"));
+		FileOutputStream fos = new FileOutputStream(new File("BenchSharedObjectReplay.class"));
 		fos.write(b);
 		fos.flush();
 		fos.close();

@@ -53,6 +53,7 @@ public class RecordMethodAdaptor extends MethodVisitor {
 				&& name.equals("nextInt") && desc.equals("(I)I")) {
 
 			meetNextInt = true;
+			mv.visitMethodInsn(opcode, owner, name, desc);
 			
 		} else {
 			mv.visitMethodInsn(opcode, owner, name, desc);
@@ -85,6 +86,31 @@ public class RecordMethodAdaptor extends MethodVisitor {
 
 		}
 	}
+
+	
+	
+	
+	@Override
+	public void visitFieldInsn(int opcode,String owner,String name,String desc) {
+		
+		if(name.startsWith("__") && (opcode==Opcodes.PUTFIELD || opcode==Opcodes.PUTSTATIC)){
+			mv.visitFieldInsn(opcode, owner, name, desc);
+			
+			mv.visitFieldInsn(Opcodes.GETSTATIC, superOwner, "Retable", "Lrecorder/RecordTable;");
+			mv.visitLdcInsn(name);
+			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Thread", "currentThread", "()Ljava/lang/Thread;");
+			mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Thread", "getName", "()Ljava/lang/String;");
+			mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "recorder/RecordTable", "record", "(Ljava/lang/String;Ljava/lang/String;)V");
+
+			
+		}else{
+			mv.visitFieldInsn(opcode, owner, name, desc);
+		}
+	}
+
+
+
+
 
 	@Override
 	public void visitMaxs(int maxStack, int maxLocals) {
