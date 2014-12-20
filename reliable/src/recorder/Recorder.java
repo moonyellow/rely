@@ -8,8 +8,8 @@ import scheduler.Scheduler;
 import test.TestThread;
 
 public class Recorder {
-	private final static int NumberOfThreads = 2;
-	private final static int TotalOperation= 50000;
+	private final static int NumberOfThreads = 4;
+	private final static int TotalOperation= 5000000;
 	private final static int SPENumber = 5;
 
 	
@@ -29,23 +29,24 @@ public class Recorder {
 		//create working threads
 		BenchThread[] T = new BenchThread[NumberOfThreads];
 		BenchSharedObject s;
+		long st,et;
+		st=System.currentTimeMillis();
+		
         for (int k=0;k<NumberOfThreads;k++) 
         {
         	s = new BenchSharedObject(SPENumber);
         	T[k] = new BenchThread(s,TotalOperation/NumberOfThreads);
-			sd.addThread(T[k]);
+			
+			T[k].start();
+//			T[k].suspend();
+//			sd.addThread(T[k]);
         }
-        
-        
-		long st,et;
-		st=System.currentTimeMillis();
-  		
 		
 		//use sd to run scheduler
-		for (int k=0;k<NumberOfThreads;k++)
-		{
-			T[k].start();
-		}
+//		for (int k=0;k<NumberOfThreads;k++)
+//		{
+//
+//		}
 		
 //		sd.run();
 		

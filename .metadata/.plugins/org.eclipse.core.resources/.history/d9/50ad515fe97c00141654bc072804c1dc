@@ -1,0 +1,57 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class Solution {
+	public static void main(String[] args) throws IOException {
+		List<Gear> list = new ArrayList<Gear>();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String params = br.readLine();
+		String[] paramArr = params.split(" ");
+		int n = Integer.parseInt(paramArr[0]);
+		int D = Integer.parseInt(paramArr[1]);
+
+		String rs = br.readLine();
+		String[] rArr = rs.split(" ");
+		
+		String cs = br.readLine();
+		String[] cArr = cs.split(" ");
+
+		for (int i = 0; i < n; i++) {
+			list.add(new Gear())
+		}
+
+	}
+
+	class Gear implements Comparable {
+		private int r;
+		private int c;
+
+		public Gear(int r, int c) {
+			super();
+			this.r = r;
+			this.c = c;
+		}
+
+		public int getR() {
+			return r;
+		}
+
+		public void setR(int r) {
+			this.r = r;
+		}
+
+		public int getC() {
+			return c;
+		}
+
+		public void setC(int c) {
+			this.c = c;
+		}
+
+		public int compareTo(Object other){
+			return this.r - ((Gear)other).r;
+		}
+	}
+}

@@ -186,6 +186,7 @@ public class ReplayMethodAdaptor extends MethodVisitor {
 		if (done)
 			return;
 
+		//shared variables are marked with __
 		if (name.startsWith("__")
 				&& (opcode == Opcodes.PUTFIELD || opcode == Opcodes.PUTSTATIC)) {
 			mv.visitFieldInsn(opcode, owner, name, desc);

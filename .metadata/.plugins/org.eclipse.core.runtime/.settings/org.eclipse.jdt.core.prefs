@@ -1,4 +1,13 @@
+JRE_LIB=/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rt.jar
 eclipse.preferences.version=1
+org.eclipse.jdt.core.classpathVariable.ECLIPSE_HOME=/home/kevin/eclipse
+org.eclipse.jdt.core.classpathVariable.JRE_LIB=/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/rt.jar
+org.eclipse.jdt.core.classpathVariable.JRE_SRC=
+org.eclipse.jdt.core.classpathVariable.JRE_SRCROOT=
+org.eclipse.jdt.core.classpathVariable.JUNIT_HOME=/home/kevin/eclipse/plugins/org.junit_4.11.0.v201303080030/
+org.eclipse.jdt.core.classpathVariable.M2_REPO=/home/kevin/.m2/repository
+org.eclipse.jdt.core.classpathVariable.SOOTCLASSES=/home/kevin/eclipse/plugins/ca.mcgill.sable.soot.lib_2.5.2/lib/sootclasses.jar
+org.eclipse.jdt.core.classpathVariable.SOOTSRC=/home/kevin/eclipse/plugins/ca.mcgill.sable.soot.lib_2.5.2/lib/sootsrc.zip
 org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6

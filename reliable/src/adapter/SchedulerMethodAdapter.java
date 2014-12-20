@@ -19,24 +19,11 @@ public class SchedulerMethodAdapter extends MethodVisitor {
 		this.superOwner = owner;
 	}
 
-	/*
-	@Override
-	protected void onMethodEnter() {
-		sdPos = newLocal(Type.getType(Scheduler.class));
-		mv.visitMethodInsn(Opcodes.INVOKESTATIC, "scheduler/Scheduler",
-				"getScheduler", "()Lscheduler/Scheduler;");
-		mv.visitVarInsn(ASTORE, sdPos);
-	}
-	*/
 	
 	
 
 	@Override
 	public void visitCode() {
-		// TODO Auto-generated method stub
-		//System.out.println("**********************************************************");
-		//		System.out.println(superOwner);
-		//		System.out.println("**********************************************************");
 		mv.visitCode();
 		mv.visitMethodInsn(Opcodes.INVOKESTATIC, "scheduler/Scheduler",
 				"getScheduler", "()Lscheduler/Scheduler;");
@@ -52,8 +39,6 @@ public class SchedulerMethodAdapter extends MethodVisitor {
 				&& name.equals("start") && desc.equals("()V")) {
 
 			// the original call
-			//mv.visitVarInsn(Opcodes.ALOAD, lastLoadPos);
-			//mv.visitVarInsn(Opcodes.ALOAD, lastLoadPos);
 			mv.visitMethodInsn(opcode, owner, name, desc);
 
 			//mv.visitVarInsn(Opcodes.ALOAD, lastLoadPos);

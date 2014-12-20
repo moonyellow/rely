@@ -6,11 +6,8 @@ import recorder.RandomTable;
 import recorder.RecordTable;
 
 public class BenchSharedObject {
-	//public static final String METHOD = "replay";
 //	public static RecordTable Retable;
 //	public static RandomTable Rantable;
-	// ///////////////////////////////////////////////////////
-	//public boolean record = false;
 
 	public static void printTop5() {
 		System.out.println("total sum="
@@ -43,7 +40,7 @@ public class BenchSharedObject {
 //		Rantable = RandomTable.getRandomTable("replay");
 		
 		String index = null;
-
+		
 		int ranv = 0;
 		//if (record == true) {
 			
@@ -51,8 +48,6 @@ public class BenchSharedObject {
 
 			//Rantable.record(Thread.currentThread().getName(),  "__data_"+ranv);
 			
-
-
 //			index = Rantable.get(Thread.currentThread().getName());
 //			Retable.check(index, Thread.currentThread().getName());
 
@@ -73,8 +68,6 @@ public class BenchSharedObject {
 			__data_4++;
 			//Retable.record( "__data_4", Thread.currentThread().getName());
 		}
-		
-		
 		
 		
 		//__data_0++;

@@ -80,7 +80,7 @@ public class Scheduler extends Thread
 
 	private ConcurrentLinkedQueue<Thread> queue = new ConcurrentLinkedQueue<Thread>();
 
-	private int timeSlice = 5;
+	private int timeSlice = 20;
 
 
 	// private static final int DEFAULT_TIME_SLICE = 5;
@@ -162,11 +162,11 @@ public class Scheduler extends Thread
 
 					schedulerSleep();
  
-					System.out.println("* * * Context Switch to "
-							+ current.getName() + " * * * ");
+//					System.out.println("* * * Context Switch to "
+//							+ current.getName() + " * * * ");
 
 					current.suspend();
-					current.setPriority(2);
+					current.setPriority(1);
 
 				}
 				if((current != null) && (!current.isAlive())){

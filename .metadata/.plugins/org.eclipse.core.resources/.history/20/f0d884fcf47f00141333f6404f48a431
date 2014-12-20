@@ -1,0 +1,64 @@
+import java.util.*;
+
+public class Test {
+	public static void main(String[] args) {
+		ListNode list = new ListNode(1);
+		list.next = new ListNode(2);
+		list.next.next = new ListNode(3);
+		list.next.next.next = new ListNode(4);
+		ListNode start = reverseKGroup(list, 2);
+		while(start!=null){
+			System.out.println(start.val);
+			start = start.next;
+		}
+	}
+
+	public static ListNode reverseKGroup(ListNode head, int k) {
+		if (head == null)
+			return head;
+
+		ListNode dummy = new ListNode(-1);
+		dummy.next = head;
+
+		ListNode left = dummy;
+		ListNode right = dummy;
+
+		int count = 0;
+		while (right != null) {
+			if (count < k) {
+				right = right.next;
+				count++;
+
+			} else {
+
+				// now we reverse left to right
+				ListNode nextRight = right.next;
+				ListNode oriLeft = left;
+				left = left.next;
+				ListNode newHead = nextRight;
+
+				while (left != nextRight) {
+					ListNode tmp = left.next;
+					left.next = newHead;
+					newHead = left;
+					left = tmp;
+				}
+				oriLeft.next = newHead;
+				right = nextRight;
+				count = 1;
+			}
+
+		}
+		return dummy.next;
+	}
+
+	public static class ListNode {
+		int val;
+		ListNode next;
+
+		ListNode(int x) {
+			val = x;
+			next = null;
+		}
+	}
+}

@@ -1,0 +1,108 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class Solution {
+	public static void main(String[] args) throws IOException {
+		List<Gear> list = new ArrayList<Gear>();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String params = br.readLine();
+		String[] paramArr = params.split(" ");
+		int n = Integer.parseInt(paramArr[0]);
+		int D = Integer.parseInt(paramArr[1]);
+
+		String rs = br.readLine();
+		String[] rArr = rs.split(" ");
+
+		String cs = br.readLine();
+		String[] cArr = cs.split(" ");
+
+		for (int i = 0; i < n; i++) {
+			list.add(new Gear(Integer.parseInt(rArr[i]), Integer
+					.parseInt(cArr[i])));
+		}
+		
+		Collections.sort(list);
+		
+		for(int i=0;i<list.size();i++){
+			Gear thisGear = list.get(i);
+			
+			//use binary search to find the first gear that having thisGear.r+its.r>=D
+			int firstInd = binarySearch(list, D, thisGear);
+			//no match found
+			if(firstInd==-1){
+				System.out.print(0+" ");
+			}else{
+				Gear bestGear = list.get(firstInd);
+				int lowestCost = bestGear.getC();
+				for(int j=firstInd+1;j<list.size();j++){
+					Gear candidateGear = list.get(j);
+					if(candidateGear.getC()<lowestCost){
+						bestGear = candidateGear;
+						lowestCost = candidateGear.getC();
+					}else if(candidateGear.getC()==lowestCost){
+						if(candidateGear.getR()>bestGear.getR()){
+							bestGear = candidateGear;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private static int binarySearch(List<Gear> list, int D, Gear thisGear){
+		int low = 0;
+		int high = list.size();
+		while(low<high){
+			int mid = (low+high)>>>1;
+			if(list.get(mid).getR()+thisGear.getR()>=D){
+				high = mid;
+			}else{
+				low = mid + 1;
+			}
+		}
+		
+		if(list.get(low).getR()+thisGear.getR()<D){
+			//if after search, low+thisGear is also false
+			//then no gear can be used, we return -1
+			return -1;
+		}else{
+			return low;
+		}
+	}
+
+	private static class Gear implements Comparable<Gear> {
+		private int r;
+		private int c;
+
+		public Gear(int r, int c) {
+			super();
+			this.r = r;
+			this.c = c;
+		}
+
+		public int getR() {
+			return r;
+		}
+
+		public void setR(int r) {
+			this.r = r;
+		}
+
+		public int getC() {
+			return c;
+		}
+
+		public void setC(int c) {
+			this.c = c;
+		}
+
+
+		@Override
+		public int compareTo(Gear other) {
+			// TODO Auto-generated method stub
+			return this.r - other.r;
+		}
+	}
+}

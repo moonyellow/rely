@@ -1,0 +1,77 @@
+import java.util.*;
+
+public class Test {
+	public static void main(String[] args) {
+	}
+
+    private HashMap<Integer,ListNode> map = new HashMap<>();
+    private ListNode head = new ListNode(-1, -1);
+    private ListNode tail = new ListNode(-1, -1);
+    head.next = tail;
+    tail.pre = head;
+    private int capacity;
+    
+    public Test(int capacity) {
+        this.capacity = capacity;
+    }
+    
+    public int get(int key) {
+        if(map.containsKey(key)){
+            ListNode cur = map.get(key);
+            cur.pre.next = cur.next;
+            cur.next.pre = cur.pre;
+            ListNode headNext = head.next;
+            cur.next = headNext;
+            cur.pre = head;
+            head.next = cur;
+            headNext.pre = cur;
+            return cur.val;
+        }else{
+            return -1;
+        }
+    }
+    
+    public void set(int key, int value) {
+        if(map.containsKey(key)){
+            ListNode cur = map.get(key);
+            cur.val = value;
+            cur.pre.next = cur.next;
+            cur.next.pre = cur.pre;
+            ListNode headNext = head.next;
+            cur.next = headNext;
+            cur.pre = head;
+            head.next = cur;
+            headNext.pre = cur;
+        }else{
+            if(map.size()<capacity){
+                ListNode newNode = new ListNode(key,value);
+                ListNode headNext = head.next;
+                newNode.next = headNext;
+                newNode.pre = head;
+                head.next = newNode;
+                headNext.pre = newNode;
+                
+                map.put(key,newNode);
+            }else{
+                ListNode victim = tail.pre;
+                map.remove(victim.key);
+                ListNode newNode = new ListNode(key, value);
+                victim.pre.next = newNode;
+                victim.next.pre=newNode;
+                newNode.pre = victim.pre;
+                newNode.next = victim.next;
+                map.put(key,newNode);
+            }
+        }
+    }
+    
+    private class ListNode{
+        public ListNode pre;
+        public ListNode next;
+        public Integer key;
+        public Integer val;
+        public ListNode(Integer key, Integer Val){
+            this.val = val;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+import java.util.*;
+
+public class Test {
+	public static void main(String[] args){
+		MinStack ms = new MinStack();
+		ms.push(512);
+		ms.push(-1024);
+		ms.push(-1024);
+		ms.push(512);
+		ms.pop();
+		ms.getMin();
+		ms.pop();
+		ms.getMin();
+		ms.pop();
+		ms.getMin();
+	}
+	
+	static class MinStack {
+	    private Stack<Integer> s = new Stack<Integer>();
+	    private Stack<Integer> ms = new Stack<Integer>();
+	    
+	    public void push(int x) {
+	        if(ms.empty() || x<=ms.peek()){
+	            ms.push(x);
+	        }
+	        s.push(x);
+	    }
+
+	    public void pop() {
+	        if(ms.peek()==s.peek()){
+	            ms.pop();
+	        }
+	        s.pop();
+	    }
+
+	    public int top() {
+	        return s.peek();
+	    }
+
+	    public int getMin() {
+	        return ms.peek();
+	    }
+	}
+}

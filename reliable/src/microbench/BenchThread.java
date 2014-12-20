@@ -14,8 +14,14 @@ public class BenchThread extends Thread {
 	{
 		for(int i=0;i<numOfOperation;i++)
 		{
-			System.out.println(Thread.currentThread().getName() + "cur:" + i);
+//			System.out.println(Thread.currentThread().getName() + "cur:" + i);
 			s.updateData();
 		}
+//		try
+//		{
+//		Thread.sleep(2000);
+//		}
+//		catch(Exception e)
+//		{;}
 	}
 }
